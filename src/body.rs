@@ -1,5 +1,6 @@
 use crate::vec3::Vec3;
 
+/// A celestial body with properties such as mass, radius, position, velocity, and acceleration.
 #[derive(Debug, Clone)]
 pub struct CelestialBody {
     pub name: String,
