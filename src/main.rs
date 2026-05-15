@@ -89,14 +89,18 @@ fn initialize_bodies() -> Vec<CelestialBody> {
 #[macroquad::main("Solar System")]
 async fn main() {
     let mut bodies = initialize_bodies();
-
     let dt = 8.64e4_f64;
+    let mut zoom: f32 = screen_width();
 
     // Main simulation loop
     loop {
         simulate_step(&mut bodies, dt);
         clear_background(BLACK);
-        render_solar_system(&bodies);
+        
+        let (_, scroll) = mouse_wheel();
+        zoom *= 1.0 + scroll * 0.1;
+
+        render_solar_system(&bodies, zoom);
         next_frame().await;
     }
 }
