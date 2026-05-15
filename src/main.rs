@@ -89,18 +89,33 @@ fn initialize_bodies() -> Vec<CelestialBody> {
 #[macroquad::main("Solar System")]
 async fn main() {
     let mut bodies = initialize_bodies();
-    let dt = 8.64e4_f64;
+    let mut dt = 8.64e4_f64;
+    let mut speed_label = "1x";
     let mut zoom: f32 = screen_width();
 
     // Main simulation loop
     loop {
+        if is_key_pressed(KeyCode::Key1) {
+            dt = 8.64e4_f64;
+            speed_label = "1x";
+        } else if is_key_pressed(KeyCode::Key2) {
+            dt = 8.64e4_f64 * 2.0;
+            speed_label = "2x";
+        } else if is_key_pressed(KeyCode::Key3) {
+            dt = 8.64e4_f64 * 4.0;
+            speed_label = "4x";
+        } else if is_key_pressed(KeyCode::Key4) {
+            dt = 8.64e4_f64 * 8.0;
+            speed_label = "8x";
+        };
+
         simulate_step(&mut bodies, dt);
         clear_background(BLACK);
         
         let (_, scroll) = mouse_wheel();
         zoom *= 1.0 + scroll * 0.1;
 
-        render_solar_system(&bodies, zoom);
+        render_solar_system(&bodies, zoom, speed_label);
         next_frame().await;
     }
 }
