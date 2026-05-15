@@ -1,3 +1,4 @@
+//! Simulation loop for advancing all celestial bodies by one timestep.
 use crate::vec3::Vec3;
 use crate::body::CelestialBody;
 use crate::physics::{compute_next_position, compute_next_acceleration, compute_next_velocity};

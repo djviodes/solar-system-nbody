@@ -12,6 +12,7 @@ use crate::renderer::render_solar_system;
 use crate::physics::compute_total_system_energy;
 use macroquad::prelude::*;
 
+/// Initializes all celestial bodies with real JPL Horizons intial conditions (2026-Jan-01).
 fn initialize_bodies() -> Vec<CelestialBody> {
     vec![
         CelestialBody::new(
@@ -94,8 +95,9 @@ async fn main() {
     let mut speed_label = "1x";
     let mut zoom: f32 = screen_width();
     let mut body_selected: Option<String> = None;
-    let mut paused: bool = false;
+    let mut paused = false;
 
+    // Capture initial energy for drift tracking
     let initial_energy = compute_total_system_energy(&bodies);
 
     // Main simulation loop
@@ -114,11 +116,11 @@ async fn main() {
             speed_label = "8x";
         } else if is_key_pressed(KeyCode::Space) {
             paused = !paused;
-        };
+        }
 
         if !paused {
             simulate_step(&mut bodies, dt);
-        };
+        }
 
         clear_background(BLACK);
         

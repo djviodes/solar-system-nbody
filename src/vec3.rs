@@ -1,4 +1,4 @@
-/// A 3-dimensional vector with f64 components.
+//! A 3-dimensional vector type for physics calculations.
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3 {
     pub x: f64,
@@ -7,6 +7,7 @@ pub struct Vec3 {
 }
 
 impl Vec3 {
+    /// Creates a new Vec3 with the given x, y, and z components.
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         Vec3 { x, y, z }
     }

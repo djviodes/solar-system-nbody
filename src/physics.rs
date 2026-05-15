@@ -1,6 +1,8 @@
+//! Physics calculations for the N-body gravitational simulation.
 use crate::vec3::Vec3;
 use crate::body::CelestialBody;
 
+/// Gravitational constant (m^3 kg^-1 s^-2).
 pub const G: f64 = 6.67430e-11;
 
 /// Computes the next position of a body using Velocity Verlet integration.
@@ -44,7 +46,7 @@ pub fn compute_total_system_energy(bodies: &[CelestialBody]) -> f64 {
     // Compute kinetic energy
     for body in bodies {
         total_energy += 0.5 * body.mass * body.velocity.compute_magnitude().powi(2);
-    };
+    }
 
     // Compute potential energy
     for i in 0..bodies.len() {
@@ -54,7 +56,7 @@ pub fn compute_total_system_energy(bodies: &[CelestialBody]) -> f64 {
                 total_energy -= G * bodies[i].mass * bodies[j].mass / distance;
             }
         }
-    };
+    }
 
     total_energy
 }
