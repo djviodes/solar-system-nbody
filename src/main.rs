@@ -8,6 +8,8 @@ mod renderer;
 use crate::vec3::Vec3;
 use crate::body::CelestialBody;
 use crate::simulation::simulate_step;
+use crate::renderer::render_solar_system;
+use macroquad::prelude::*;
 
 fn initialize_bodies() -> Vec<CelestialBody> {
     vec![
@@ -84,7 +86,8 @@ fn initialize_bodies() -> Vec<CelestialBody> {
     ]
 }
 
-fn main() {
+#[macroquad::main("Solar System")]
+async fn main() {
     let mut bodies = initialize_bodies();
 
     let dt = 8.64e4_f64;
@@ -92,5 +95,8 @@ fn main() {
     // Main simulation loop
     loop {
         simulate_step(&mut bodies, dt);
+        clear_background(BLACK);
+        render_solar_system(&bodies);
+        next_frame().await;
     }
 }
