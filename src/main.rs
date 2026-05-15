@@ -92,6 +92,8 @@ async fn main() {
     let mut dt = 8.64e4_f64;
     let mut speed_label = "1x";
     let mut zoom: f32 = screen_width();
+    let mut body_selected: Option<String> = None;
+    let mut paused: bool = false;
 
     // Main simulation loop
     loop {
@@ -107,15 +109,20 @@ async fn main() {
         } else if is_key_pressed(KeyCode::Key4) {
             dt = 8.64e4_f64 * 8.0;
             speed_label = "8x";
+        } else if is_key_pressed(KeyCode::Space) {
+            paused = !paused;
         };
 
-        simulate_step(&mut bodies, dt);
+        if !paused {
+            simulate_step(&mut bodies, dt);
+        };
+
         clear_background(BLACK);
         
         let (_, scroll) = mouse_wheel();
         zoom *= 1.0 + scroll * 0.1;
 
-        render_solar_system(&bodies, zoom, speed_label);
+        render_solar_system(&bodies, zoom, speed_label, &mut body_selected, paused);
         next_frame().await;
     }
 }

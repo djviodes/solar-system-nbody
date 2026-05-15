@@ -1,7 +1,7 @@
 use crate::vec3::Vec3;
 use crate::body::CelestialBody;
 
-const G: f64 = 6.67430e-11;
+pub const G: f64 = 6.67430e-11;
 
 /// Computes the next position of a body using Velocity Verlet integration.
 pub fn compute_next_position(body: &CelestialBody, dt: f64) -> Vec3 {
