@@ -36,3 +36,25 @@ pub fn compute_next_velocity(body: &CelestialBody, next_acceleration: Vec3, dt: 
     body.velocity
         .add((body.acceleration.add(next_acceleration)).multiply_by_scalar(0.5 * dt))
 }
+
+/// Computes the total mechanical energy of all bodies in the system.
+pub fn compute_total_system_energy(bodies: &[CelestialBody]) -> f64 {
+    let mut total_energy = 0.0;
+
+    // Compute kinetic energy
+    for body in bodies {
+        total_energy += 0.5 * body.mass * body.velocity.compute_magnitude().powi(2);
+    };
+
+    // Compute potential energy
+    for i in 0..bodies.len() {
+        for j in (i + 1)..bodies.len() {
+            let distance = bodies[i].position.subtract(bodies[j].position).compute_magnitude();
+            if distance > 0.0 {
+                total_energy -= G * bodies[i].mass * bodies[j].mass / distance;
+            }
+        }
+    };
+
+    total_energy
+}

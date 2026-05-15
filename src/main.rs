@@ -9,6 +9,7 @@ use crate::vec3::Vec3;
 use crate::body::CelestialBody;
 use crate::simulation::simulate_step;
 use crate::renderer::render_solar_system;
+use crate::physics::compute_total_system_energy;
 use macroquad::prelude::*;
 
 fn initialize_bodies() -> Vec<CelestialBody> {
@@ -95,6 +96,8 @@ async fn main() {
     let mut body_selected: Option<String> = None;
     let mut paused: bool = false;
 
+    let initial_energy = compute_total_system_energy(&bodies);
+
     // Main simulation loop
     loop {
         if is_key_pressed(KeyCode::Key1) {
@@ -122,7 +125,19 @@ async fn main() {
         let (_, scroll) = mouse_wheel();
         zoom *= 1.0 + scroll * 0.1;
 
-        render_solar_system(&bodies, zoom, speed_label, &mut body_selected, paused);
+        let current_energy = compute_total_system_energy(&bodies);
+        let energy_drift_percentage = (current_energy - initial_energy) / initial_energy;
+
+        render_solar_system(
+            &bodies,
+            zoom,
+            speed_label,
+            &mut body_selected,
+            paused,
+            current_energy,
+            energy_drift_percentage
+        );
+
         next_frame().await;
     }
 }

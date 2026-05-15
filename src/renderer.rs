@@ -9,6 +9,8 @@ pub fn render_solar_system(
     speed_label: &str,
     body_selected: &mut Option<String>,
     paused: bool,
+    current_energy: f64,
+    energy_drift_percentage: f64
 ) {
     let scale: f32 = zoom / 4.5e12_f32;
 
@@ -179,4 +181,28 @@ pub fn render_solar_system(
             );
         }
     }
+
+    let total_energy_label = format!(
+        "Total Energy: {:.2e} J",
+        current_energy
+    );
+    draw_text(
+        &total_energy_label,
+        12.0,
+        screen_height() - 50.0,
+        20.0,
+        WHITE
+    );
+
+    let energy_drift_label = format!(
+        "Energy Drift: {:.2e}%",
+        energy_drift_percentage
+    );
+    draw_text(
+        &energy_drift_label,
+        12.0,
+        screen_height() - 25.0,
+        20.0,
+        WHITE
+    );
 }
